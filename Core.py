@@ -7,8 +7,8 @@ class Core(commands.Cog):
   def __init__(self, bot: commands.Bot):
     self.bot = bot
   
-  @app_commands.command(name="ban", description="Test")
-  async def ping(self, 
+  @app_commands.command(name="ban", description="ban an user")
+  async def ban(self, 
   interaction:discord.Interaction, 
   user: discord.User,
   reason: str):
