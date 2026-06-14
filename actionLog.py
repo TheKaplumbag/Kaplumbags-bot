@@ -3,6 +3,7 @@ from discord.ext import commands
 import datetime
 import os 
 from dotenv import load_dotenv
+
 load_dotenv()
 LOG_CHANNEL_ID = int(os.getenv("LOG_CHANNEL"))
 
