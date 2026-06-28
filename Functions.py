@@ -7,6 +7,7 @@ from dotenv import load_dotenv
 load_dotenv()
 API_KEY = os.getenv("API_KEY")
 UNIVERSE_ID = os.getenv("UNIVERSE_ID")
+COOKIE = os.getenv("COOKIE")
 
 def FindUserId(username: str):
   username = username.strip()
@@ -170,3 +171,7 @@ def GetPlayerHistory(userId: int, player: str):
   else:
     print(f"API Error {response.status_code}: {response.text}")
     return f"⚠️ API Error: {response.status_code}"
+
+
+def GroupBan():
+  pass

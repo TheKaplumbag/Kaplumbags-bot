@@ -7,7 +7,7 @@ from discord import app_commands
 from discord.ext import commands
 from actionLog import send_log
 import requests
-from Functions import FindUserId,UserGameBan, GetFullBanList,UnGameBan
+from Functions import FindUserId,UserGameBan, GetGameBanHistory,UnGameBan,GetPlayerHistory,GroupBan
 from timeCalc import calc
 import asyncio
 
