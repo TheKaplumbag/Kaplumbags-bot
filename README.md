@@ -1,3 +1,3 @@
 # Kaplumbags-bot
-Discord bot
-THIS IS A TEST SO DONT TAKE SERIOUSLY
+This is a discord bot for a discord server called Rig Shift
+Feel free to use this btw idc i made this for fun
