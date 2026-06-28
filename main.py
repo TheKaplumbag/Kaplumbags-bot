@@ -69,7 +69,12 @@ class Bot(commands.Bot):
     await refresh_csrf_token()
     print("Roblox session initialized.")
 
-
+    async with roblox_session.get("https://users.roblox.com/v1/users/authenticated") as resp:
+      if resp.status == 200:
+        user_data = await resp.json()
+        print(f"Logged into Roblox as: {user_data.get('name')} (ID: {user_data.get('id')})")
+      else:
+        print(f"Roblox auth check failed with status code: {resp.status}")
 
 
 
