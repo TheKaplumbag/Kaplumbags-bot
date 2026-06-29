@@ -76,7 +76,12 @@ class Bot(commands.Bot):
       else:
         print(f"Roblox auth check failed with status code: {resp.status}")
 
-
+  async def close(self):
+    global roblox_session
+    if roblox_session and not roblox_session.closed:
+      await roblox_session.close()
+      print("\nRoblox session cleanly closed.")
+    await super().close()
 
     
 if __name__=="__main__":
