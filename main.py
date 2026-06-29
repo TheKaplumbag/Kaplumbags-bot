@@ -42,8 +42,8 @@ class Bot(commands.Bot):
     activity=discord.Game(name="Free Animate [BETA]")
 
   async def setup_hook(self):
-    await self.load_extension("cogs.Core")
-    
+    await self.load_extension("cogs.GameCommands")
+    await self.load_extension("cogs.GroupCommands")
     if DEV_GUILD and DEV_GUILD.isdigit():
       guild = discord.Object(id=int(DEV_GUILD))
       self.tree.copy_global_to(guild=guild)
