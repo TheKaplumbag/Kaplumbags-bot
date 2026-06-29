@@ -6,7 +6,7 @@ def calc(duration_str: str) -> str:
   if duration_str in perms:
     return None
   else: 
-      match = re.match(r"^(\d+)([mhdw]?)$", duration_str)
+      match = re.match(r"^(\d+)([mhdws]?)$", duration_str)
       if not match:
         return None
         
@@ -19,7 +19,8 @@ def calc(duration_str: str) -> str:
         "h": 3600,
         "d": 86400,
         "w": 604800, 
-        "": 1, #If empty excepts the time as seconds
+        "s": 1,
+        "": 1 #If empty excepts the time as seconds
         }
     
       exact_seconds = value * multipliers.get(unit, 1)
