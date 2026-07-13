@@ -6,7 +6,9 @@ import os
 from discord import app_commands
 import asyncio
 import aiohttp
-from discord.ext import commands 
+from discord.ext import commands
+
+
 
 load_dotenv()
 COOKIE = os.getenv("COOKIE")
@@ -37,6 +39,7 @@ class Bot(commands.Bot):
   def __init__(self):
     Intents = discord.Intents.all()
     Intents.guilds = True
+    
     super().__init__(command_prefix=commands.when_mentioned_or("!"), intents=Intents)
     help_command=None
     activity=discord.Game(name="Free Animate [BETA]")

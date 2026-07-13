@@ -9,7 +9,6 @@ from Functions.Utilities import send_log,calculate,FindUserId
 import requests
 from Functions.GameFunctions import UserGameBan, GetGameBanHistory,UnGameBan,GetPlayerHistory
 import asyncio
-
 load_dotenv()
 
 API_KEY = os.getenv("API_KEY")
