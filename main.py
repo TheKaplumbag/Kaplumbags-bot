@@ -14,6 +14,7 @@ load_dotenv()
 COOKIE = os.getenv("COOKIE")
 TOKEN = os.getenv("TOKEN")
 DEV_GUILD = os.getenv("DEV_GUILD")
+PROXY = os.getenv("PROXY_URL")
 
 ROBLOSECURITY_COOKIE = COOKIE
 roblox_session = None
@@ -40,7 +41,7 @@ class Bot(commands.Bot):
     Intents = discord.Intents.all()
     Intents.guilds = True
     
-    super().__init__(command_prefix=commands.when_mentioned_or("!"), intents=Intents)
+    super().__init__(command_prefix=commands.when_mentioned_or("!"), intents=Intents, proxy=PROXY)
     help_command=None
     activity=discord.Game(name="Free Animate [BETA]")
 
