@@ -160,9 +160,10 @@ def GetPlayerHistory(userId: int, player: str) -> str:
       public_reason = log.get("displayReason", "No reason provided")
       private_reason = log.get("privateReason", "No internal reason")
       isActive = log.get("active", "N/A")
-      formatted_message += f"👤 **User:** [Profile Link]({user_link}) *(ID: {user_id})*\n"
+      
+      formatted_message += f"👤 **User:** [{player}]({user_link}) *(ID: {user_id})*\n"
       formatted_message += f"🛠️ **Moderator:** [Profile Link]({mod_link})\n"
-      formatted_message += f"**Is Active:** {isActive}"
+      formatted_message += f"❓ **Is Active:** {isActive}\n"
       formatted_message += f"📄 **Reason:** {public_reason}\n"
       formatted_message += f"🔒 **Internal Note:** *{private_reason}*\n"
       formatted_message += "---------------------------------------\n"
