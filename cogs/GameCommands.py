@@ -16,7 +16,6 @@ UNIVERSE_ID = os.getenv("UNIVERSE_ID")
 PLACE_ID = os.getenv("PLACE_ID")
 
 
-
 class GameCommands(commands.Cog):
   def __init__(self, bot: commands.Bot):
     self.bot = bot

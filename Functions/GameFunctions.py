@@ -41,6 +41,7 @@ def UserGameBan(userId: int, duration: str, display_reason: str, private_reason:
         print(f"An error occurred: {e}")
         return False
   
+
   
 def GetGameBanHistory() -> str:
   url = f"https://apis.roblox.com/cloud/v2/universes/{UNIVERSE_ID}/user-restrictions:listLogs"
