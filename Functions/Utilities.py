@@ -2,7 +2,8 @@ import re
 import discord
 from discord.ext import commands
 import datetime
-import os 
+import os
+import requests
 from dotenv import load_dotenv
 
 load_dotenv()
