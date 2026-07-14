@@ -95,10 +95,32 @@ class GameCommands(commands.Cog):
   #@discord.app_commands.checks.has_any_role("Game Moderator","Admin", "Head Admin", "Creator")
   @discord.app_commands.checks.has_role(1384526591173853316)
   @app_commands.checks.cooldown(1, 25.0, key=lambda i: i.user.id)
-  async def getCurrentBans(self, interaction: discord.Interaction):
-    await interaction.response.defer(thinking=True)
-    banlist = GetGameBanHistory()
-    await interaction.followup.send(banlist)
+async def getCurrentBans(self, interaction: discord.Interaction):
+  await interaction.response.defer(thinking=True)
+  banlist: str = GetGameBanHistory()
+  
+  if len(banlist) <= 2000:
+    await interaction.followup.send(content=banlist)
+    return
+
+  chunks = []
+  current_chunk = ""
+  for block in banlist.split("-------------------------------------\n"):
+    if len(current_chunk) + len(block) + 38 > 2000:
+      chunks.append(current_chunk)
+      current_chunk = block + "-------------------------------------\n"
+    else:
+      current_chunk += block + "-------------------------------------\n"
+          
+  if current_chunk:
+    chunks.append(current_chunk)
+
+  await interaction.followup.send(content=chunks[0])
+
+  for chunk in chunks[1:]:
+    if chunk.strip():
+      await interaction.followup.send(content=chunk)
+
   
   
   
