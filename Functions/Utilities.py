@@ -9,7 +9,7 @@ from dotenv import load_dotenv
 load_dotenv()
 LOG_CHANNEL_ID = int(os.getenv("LOG_CHANNEL"))
 
-async def send_log(bot, title, description, color: discord.Color = discord.Color.blue(), fields=None):
+async def send_log(bot, title, description, color: discord.Color = discord.Color.blue(), fields=None) -> None:
     """
     Sends a log message to a specific Discord channel.
     
@@ -71,7 +71,7 @@ def calculate(duration_str: str) -> str:
       exact_seconds = value * multipliers.get(unit, 1)
       return f"{exact_seconds}s"
 
-def FindUserId(username: str):
+def FindUserId(username: str) -> int:
   username = username.strip()
   url = "https://users.roblox.com/v1/usernames/users"
   headers = {

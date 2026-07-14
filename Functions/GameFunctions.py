@@ -42,9 +42,8 @@ def UserGameBan(userId: int, duration: str, display_reason: str, private_reason:
         return False
   
 
-  
-def GetGameBanHistory() -> str:
-  url = f"https://apis.roblox.com/cloud/v2/universes/{UNIVERSE_ID}/user-restrictions:listLogs"
+def GetCurrentBans() -> str:
+  url = f"https://apis.roblox.com/cloud/v2/universes/{UNIVERSE_ID}/user-restrictions"
   headers = {"x-api-key": API_KEY, "Content-Type": "application/json"}
 
   response = requests.get(url, headers=headers)
@@ -107,6 +106,7 @@ def GetGameBanHistory() -> str:
     print(f"API Error {response.status_code}: {response.text}")
     return f"⚠️ API Error: {response.status_code}"
 
+
 def UnGameBan(userId: int, display_reason: str, private_reason: str) -> bool | str:
   url = f"https://apis.roblox.com/cloud/v2/universes/{UNIVERSE_ID}/user-restrictions/{userId}"
   headers={
@@ -146,9 +146,9 @@ def GetPlayerHistory(userId: int, player: str) -> str:
     data = json.loads(response.text)
     
     if "logs" not in data or not data["logs"]:
-      return "📋 **Ban Logs:** No active bans found."
+      return "📋 **Ban History:** No history found."
     
-    formatted_message = f"📋 **ROBLOX BAN LOG OF {player.strip()}**\n\n"
+    formatted_message = f"📋 **ROBLOX BAN HISTORY OF {player.strip()}**\n\n"
     
     for log in data["logs"]:
       user_id = log["user"].split("/")[-1]
@@ -159,9 +159,10 @@ def GetPlayerHistory(userId: int, player: str) -> str:
       
       public_reason = log.get("displayReason", "No reason provided")
       private_reason = log.get("privateReason", "No internal reason")
-      
+      isActive = log.get("active", "N/A")
       formatted_message += f"👤 **User:** [Profile Link]({user_link}) *(ID: {user_id})*\n"
       formatted_message += f"🛠️ **Moderator:** [Profile Link]({mod_link})\n"
+      formatted_message += f"**Is Active:** {isActive}"
       formatted_message += f"📄 **Reason:** {public_reason}\n"
       formatted_message += f"🔒 **Internal Note:** *{private_reason}*\n"
       formatted_message += "---------------------------------------\n"

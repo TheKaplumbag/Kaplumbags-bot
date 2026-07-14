@@ -2,13 +2,16 @@ import discord
 import logging
 import os 
 import json
+import requests
+import asyncio
+
 from dotenv import load_dotenv
 from discord import app_commands
 from discord.ext import commands
 from Functions.Utilities import send_log,calculate,FindUserId
-import requests
-from Functions.GameFunctions import UserGameBan, GetGameBanHistory,UnGameBan,GetPlayerHistory
-import asyncio
+from Functions.GameFunctions import UserGameBan, GetCurrentBans,UnGameBan,GetPlayerHistory
+
+
 load_dotenv()
 
 API_KEY = os.getenv("API_KEY")
@@ -52,16 +55,8 @@ class GameCommands(commands.Cog):
         await interaction.response.send_message(f"An error occurred: {error}", ephemeral=True)
     except discord.HTTPException as e:
             print(f"Network error while handling command error: {e}")
-  """
-  @app_commands.command(name="get-banlogs", description= "Get full banlogs of people qho got banned via ban api.")
-  # @discord.app_commands.checks.has_any_role("Game Moderator","Admin", "Head Admin", "Creator")
-  # Test server role id
-  @discord.app_commands.checks.has_role(1384526591173853316)
-  @app_commands.checks.cooldown(2, 60.0, key=lambda i: i.user.id)
-  async def FullBanLogs(self, interaction: discord.Interaction):
-    List = GetGameBanHistory()
-    await interaction.response.send_message(List)
-  """
+
+  
   @app_commands.command(name="ungameban", description="Unban someone from game")
   #@discord.app_commands.checks.has_any_role("Game Moderator","Admin", "Head Admin", "Creator")
   @discord.app_commands.checks.has_role(1384526591173853316)
@@ -96,7 +91,7 @@ class GameCommands(commands.Cog):
   @app_commands.checks.cooldown(1, 25.0, key=lambda i: i.user.id)
   async def getCurrentBans(self, interaction: discord.Interaction):
     await interaction.response.defer(thinking=True)
-    banlist: str = GetGameBanHistory()
+    banlist: str = GetCurrentBans()
   
     if len(banlist) <= 2000:
       await interaction.followup.send(content=banlist)
@@ -120,7 +115,43 @@ class GameCommands(commands.Cog):
       if chunk.strip():
         await interaction.followup.send(content=chunk)
 
-  
+  @app_commands.command(name="list-playerban-history", description="List past and present bans of player")
+  #@discord.app_commands.checks.has_any_role("Game Moderator","Admin", "Head Admin", "Creator")
+  @discord.app_commands.checks.has_role(1384526591173853316)
+  @app_commands.checks.cooldown(1, 25.0, key=lambda i: i.user.id)
+  async def PlayerBanHistory(self, interaction: discord.Interaction, player: str):
+    player_id : int = FindUserId(player)
+
+    await interaction.response.defer(thinking=True)
+    banlist : str = GetPlayerHistory(player_id, player)
+    
+    if len(banlist) <= 2000:
+      await interaction.followup.send(content=banlist)
+      return
+
+    chunks = []
+    current_chunk = ""
+    for block in banlist.split("-------------------------------------\n"):
+      if len(current_chunk) + len(block) + 38 > 2000:
+        chunks.append(current_chunk)
+        current_chunk = block + "-------------------------------------\n"
+      else:
+        current_chunk += block + "-------------------------------------\n"
+          
+    if current_chunk:
+      chunks.append(current_chunk)
+
+    await interaction.followup.send(content=chunks[0])
+
+    for chunk in chunks[1:]:
+      if chunk.strip():
+        await interaction.followup.send(content=chunk)
+
+
+
+
+
+    
   
   
 async def setup(bot: commands.Bot):
