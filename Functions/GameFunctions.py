@@ -10,7 +10,7 @@ UNIVERSE_ID = os.getenv("UNIVERSE_ID")
 COOKIE = os.getenv("COOKIE")
 
 
-def UserGameBan(userId: int, duration: str, display_reason: str, private_reason: str, ban_alts: bool) -> Bool | str:
+def UserGameBan(userId: int, duration: str, display_reason: str, private_reason: str, ban_alts: bool) -> bool | str:
   url = f"https://apis.roblox.com/cloud/v2/universes/{UNIVERSE_ID}/user-restrictions/{userId}"
   headers={
     "x-api-key": API_KEY,
