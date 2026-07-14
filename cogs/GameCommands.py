@@ -90,7 +90,15 @@ class GameCommands(commands.Cog):
         await interaction.response.send_message(f"An error occurred: {error}", ephemeral=True)
     except discord.HTTPException as e:
             print(f"Network error while handling command error: {e}")
-  
+
+  @app_commands.command(name="current-gamebans", description="shows who's currently banned")
+  #@discord.app_commands.checks.has_any_role("Game Moderator","Admin", "Head Admin", "Creator")
+  @discord.app_commands.checks.has_role(1384526591173853316)
+  @app_commands.checks.cooldown(1, 25.0, key=lambda i: i.user.id)
+  async def getCurrentBans(self, interaction: discord.Interaction):
+    await interaction.response.defer(thinking=True)
+    banlist = GetGameBanHistory()
+    await interaction.followup.send(banlist)
   
   
   
