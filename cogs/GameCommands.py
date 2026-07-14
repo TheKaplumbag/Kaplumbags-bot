@@ -26,8 +26,8 @@ class GameCommands(commands.Cog):
   
   
   @app_commands.command(name="gameban", description="To set durations use h,d,w,m, perm, 0s for permban if no unit then it will be second")
-  #@discord.app_commands.checks.has_any_role("Game Moderator","Admin", "Head Admin", "Creator")
-  @discord.app_commands.checks.has_role(1384526591173853316)
+  @discord.app_commands.checks.has_any_role("moderator","admin", "head admin", "Da Owner")
+  #@discord.app_commands.checks.has_role(1384526591173853316)
   @app_commands.checks.cooldown(1, 25.0, key=lambda i: i.user.id)
   async def Gameban(self, interaction: discord.Interaction,
   player: str, 
@@ -58,8 +58,8 @@ class GameCommands(commands.Cog):
 
   
   @app_commands.command(name="ungameban", description="Unban someone from game")
-  #@discord.app_commands.checks.has_any_role("Game Moderator","Admin", "Head Admin", "Creator")
-  @discord.app_commands.checks.has_role(1384526591173853316)
+  @discord.app_commands.checks.has_any_role("moderator","admin", "head admin", "Da Owner")
+  #@discord.app_commands.checks.has_role(1384526591173853316)
   @app_commands.checks.cooldown(1, 25.0, key=lambda i: i.user.id)
   async def UnGameban(self, interaction: discord.Interaction,
   player: str,
@@ -86,8 +86,8 @@ class GameCommands(commands.Cog):
             print(f"Network error while handling command error: {e}")
 
   @app_commands.command(name="current-gamebans", description="shows who's currently banned")
-  #@discord.app_commands.checks.has_any_role("Game Moderator","Admin", "Head Admin", "Creator")
-  @discord.app_commands.checks.has_role(1384526591173853316)
+  @discord.app_commands.checks.has_any_role("moderator","admin", "head admin", "Da Owner")
+  #@discord.app_commands.checks.has_role(1384526591173853316)
   @app_commands.checks.cooldown(1, 25.0, key=lambda i: i.user.id)
   async def getCurrentBans(self, interaction: discord.Interaction):
     await interaction.response.defer(thinking=True)
@@ -116,8 +116,8 @@ class GameCommands(commands.Cog):
         await interaction.followup.send(content=chunk)
 
   @app_commands.command(name="list-playerban-history", description="List past and present bans of player")
-  #@discord.app_commands.checks.has_any_role("Game Moderator","Admin", "Head Admin", "Creator")
-  @discord.app_commands.checks.has_role(1384526591173853316)
+  @discord.app_commands.checks.has_any_role("moderator","admin", "head admin", "Da Owner")
+  #@discord.app_commands.checks.has_role(1384526591173853316)
   @app_commands.checks.cooldown(1, 25.0, key=lambda i: i.user.id)
   async def PlayerBanHistory(self, interaction: discord.Interaction, player: str):
     player_id : int = FindUserId(player)
