@@ -45,43 +45,67 @@ def UserGameBan(userId: int, duration: str, display_reason: str, private_reason:
   
 def GetGameBanHistory() -> str:
   url = f"https://apis.roblox.com/cloud/v2/universes/{UNIVERSE_ID}/user-restrictions:listLogs"
-  headers = {
-    "x-api-key": API_KEY,
-    "Content-Type": "application/json"
-  }
-  
+  headers = {"x-api-key": API_KEY, "Content-Type": "application/json"}
+
   response = requests.get(url, headers=headers)
-  
+
   if response.status_code == 200:
     data = json.loads(response.text)
-    
+
     if "logs" not in data or not data["logs"]:
       return "📋 **Ban Logs:** No active bans found."
-    
+
+    user_ids = []
+    for log in data["logs"]:
+      user_id = log["user"].split("/")[-1]
+      user_ids.append(int(user_id))
+
+    user_ids = list(set(user_ids))
+
+    username_map = {}
+    if user_ids:
+      users_url = "https://users.roblox.com/v1/users"
+      payload = {"userIds": user_ids, "excludeBannedUsers": False}
+      try:
+        users_res = requests.post(users_url, json=payload)
+        if users_res.status_code == 200:
+          users_data = users_res.json().get("data", [])
+          for user in users_data:
+            username_map[str(user["id"])] = user["name"]
+      except Exception as e:
+        print(f"Error fetching usernames: {e}")
+
     formatted_message = "📋 **ROBLOX BAN LOGS**\n\n"
-    
+
     for log in data["logs"]:
       user_id = log["user"].split("/")[-1]
       mod_id = log["moderator"]["robloxUser"].split("/")[-1]
-      
+
+      username = username_map.get(user_id, "Unknown_Player")
+
       user_link = f"https://www.roblox.com/users/{user_id}/profile"
       mod_link = f"https://www.roblox.com/users/{mod_id}/profile"
-      
+
       public_reason = log.get("displayReason", "No reason provided")
       private_reason = log.get("privateReason", "No internal reason")
-      
-      formatted_message += f"👤 **User:** [Profile Link]({user_link}) *(ID: {user_id})*\n"
-      formatted_message += f"🛠️ **Moderator:** [Profile Link]({mod_link})\n"
+
+      formatted_message += (
+          f"👤 **User:** [{username}]({user_link}) *(ID: {user_id})*\n"
+      )
+      formatted_message += (
+          f"🛠️ **Moderator:** [Profile Link]({mod_link})\n"
+      )
       formatted_message += f"📄 **Reason:** {public_reason}\n"
-      formatted_message += f"🔒 **Internal Note:** *{private_reason}*\n"
-      formatted_message += "---------------------------------------\n"
-        
+      formatted_message += f"🔒 **Internal Note:** {private_reason}\n"
+      formatted_message += (
+          "--------------------------------------------------\n"
+      )
+
     return formatted_message
 
   else:
     print(f"API Error {response.status_code}: {response.text}")
     return f"⚠️ API Error: {response.status_code}"
-
 
 def UnGameBan(userId: int, display_reason: str, private_reason: str) -> bool | str:
   url = f"https://apis.roblox.com/cloud/v2/universes/{UNIVERSE_ID}/user-restrictions/{userId}"
