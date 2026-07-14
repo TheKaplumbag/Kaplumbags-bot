@@ -10,7 +10,7 @@ UNIVERSE_ID = os.getenv("UNIVERSE_ID")
 COOKIE = os.getenv("COOKIE")
 
 
-def UserGameBan(userId: int, duration: str, display_reason: str, private_reason: str, ban_alts: bool):
+def UserGameBan(userId: int, duration: str, display_reason: str, private_reason: str, ban_alts: bool) -> Bool | str:
   url = f"https://apis.roblox.com/cloud/v2/universes/{UNIVERSE_ID}/user-restrictions/{userId}"
   headers={
     "x-api-key": API_KEY,
@@ -42,7 +42,7 @@ def UserGameBan(userId: int, duration: str, display_reason: str, private_reason:
         return False
   
   
-def GetGameBanHistory():
+def GetGameBanHistory() -> str:
   url = f"https://apis.roblox.com/cloud/v2/universes/{UNIVERSE_ID}/user-restrictions:listLogs"
   headers = {
     "x-api-key": API_KEY,
@@ -82,7 +82,7 @@ def GetGameBanHistory():
     return f"⚠️ API Error: {response.status_code}"
 
 
-def UnGameBan(userId: int, display_reason: str, private_reason: str):
+def UnGameBan(userId: int, display_reason: str, private_reason: str) -> bool | str:
   url = f"https://apis.roblox.com/cloud/v2/universes/{UNIVERSE_ID}/user-restrictions/{userId}"
   headers={
     "x-api-key": API_KEY,
@@ -106,7 +106,7 @@ def UnGameBan(userId: int, display_reason: str, private_reason: str):
     return False
 
 
-def GetPlayerHistory(userId: int, player: str):
+def GetPlayerHistory(userId: int, player: str) -> str:
   url = f"https://apis.roblox.com/cloud/v2/universes/{UNIVERSE_ID}/user-restrictions:listLogs"
   headers={
     "x-api-key": API_KEY,
@@ -145,7 +145,3 @@ def GetPlayerHistory(userId: int, player: str):
   else:
     print(f"API Error {response.status_code}: {response.text}")
     return f"⚠️ API Error: {response.status_code}"
-
-
-def GroupBan():
-  pass
