@@ -48,16 +48,18 @@ class Bot(commands.Bot):
   async def setup_hook(self):
     await self.load_extension("cogs.GameCommands")
     await self.load_extension("cogs.GroupCommands")
+
+    await self.tree.sync()
+    logging.info("Synced global commands")
+    
     if DEV_GUILD and DEV_GUILD.isdigit():
       guild = discord.Object(id=int(DEV_GUILD))
       self.tree.copy_global_to(guild=guild)
       await self.tree.sync(guild=guild)
       
       logging.info(f"Synced commands to DEV_GUILD={DEV_GUILD}")
-    else:
-       await self.tree.sync()
-       logging.info("Synced global commands")
 
+  
   async def on_ready(self):
     logging.basicConfig(level=logging.INFO)
     logging.info("Logged in as Bot")
